@@ -135,7 +135,6 @@ observable where the Z lineshape gives the rate. Note pass bins
 but don't use. This is because minuit requires x variable to have same lenght as
 input measurements
 '''
-
 def z_lineshape(x):
         mZ = 91.1876 # GeV
         gZ = 2.4955  # GeV
