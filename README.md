@@ -8,7 +8,8 @@
 1. **You only need to do the below once**
     - MacOS: 
         - Open a terminal (eg by pressing "cmd"+"space" and typing "Terminal" or "iTerm". [You will use this terminal in subsequent steps when launching your jupyter notebook]
-        - Assuming you have conda installed (if not follow the instructions at the top) type: 
+        - Assuming you have conda installed (if not follow the instructions at the top) type:
+            - `conda config --add channels conda-forge ` and hit enter
             - `conda create -n hep-env python=3.11 uproot zfit matplotlib numpy scipy iminuit pandas jupyter` and hit enter
         - Now activate the environment by typing: 
             - `conda activate hep-env` and hit enter
@@ -18,6 +19,7 @@
          - This assumes you have anaconda installed (if not follow the instructions at the top)
          - Press the windows key and search for "Anaconda PowerShell Prompt" and click on icon that comes up. You'll get a terminal with (base) at the beginning of the line. [You will use this Powershell prompt in subsequent steps when launching your jupyter notebook]
          - Now type:
+             - `conda config --add channels conda-forge ` and hit enter
              - `conda create -n hep-env python=3.11 uproot zfit matplotlib numpy scipy iminuit pandas jupyter` and hit enter
         - Now activate the environment by typing: 
             - `conda activate hep-env` and hit enter
