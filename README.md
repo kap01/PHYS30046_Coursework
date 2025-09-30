@@ -15,6 +15,7 @@
             - `conda activate hep-env` and hit enter
         - Now install another package (or two) by typing:
             - `pip install mplhep`
+            - `pip install vector`
      - Windows:
          - This assumes you have anaconda installed (if not follow the instructions at the top)
          - Press the windows key and search for "Anaconda PowerShell Prompt" and click on icon that comes up. You'll get a terminal with (base) at the beginning of the line. [You will use this Powershell prompt in subsequent steps when launching your jupyter notebook]
@@ -25,6 +26,7 @@
             - `conda activate hep-env` and hit enter
         - Now install another package (or two) by typing:
             - `pip install mplhep`
+            - `pip install vector`
 2. **Downloading the .ipynb files from git**
     - Either clone the git repository from a terminal (MacOS) or Anaconda Powershell Prompt (Windows) or download the various .ipynb files including the utils.py file and any other files, directly using the webpage interface and place all the files in the same directory.
 
