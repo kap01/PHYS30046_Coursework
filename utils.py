@@ -258,15 +258,14 @@ def open_dimuon_files_and_reduce():
 def compute_afb_correction():
     # Obtain corrections regarding AFB dilution
     # Load CSV with no header
-    afb_raw_files = [pd.read_csv("input_files/AFB_raw_qqbar_0.0-0.4.csv", header=None),
-                     pd.read_csv("input_files/AFB_raw_qqbar_0.4-0.8.csv", header=None),
-                     pd.read_csv("input_files/AFB_raw_qqbar_0.8-1.2.csv", header=None),
-                     pd.read_csv("input_files/AFB_raw_qqbar_1.2-1.6.csv", header=None),
-                     pd.read_csv("input_files/AFB_raw_qqbar_1.6-2.0.csv", header=None),
-                     pd.read_csv("input_files/AFB_raw_qqbar_2.0-2.4.csv", header=None)
+    afb_raw_files = [pd.read_csv("AFB_raw_qqbar_0.0-0.4.csv", header=None),
+                     pd.read_csv("AFB_raw_qqbar_0.4-0.8.csv", header=None),
+                     pd.read_csv("AFB_raw_qqbar_0.8-1.2.csv", header=None),
+                     pd.read_csv("AFB_raw_qqbar_1.2-1.6.csv", header=None),
+                     pd.read_csv("AFB_raw_qqbar_1.6-2.0.csv", header=None),
+                     pd.read_csv("AFB_raw_qqbar_2.0-2.4.csv", header=None)
                     ]
-    afb_true_file = pd.read_csv("input_files/AFB_true_qqbar.csv")
-    afb_raw_qqbar_all_file = pd.read_csv("input_files/AFB_raw_qqbar_all.csv")
+    afb_true_file = pd.read_csv("AFB_true_qqbar.csv")
     bins = np.array([60,70,78,84,87,89,91,93,95,98,104,112,120]) # binning as per paper
     def create_spline(x,y,descr="",plot=False):
         # Create spline (exact interpolation)
@@ -301,12 +300,6 @@ def compute_afb_correction():
     # Create spline (exact interpolation)
     afb_true_spline = create_spline(x,y,"qqbar true")
 
-    afb_raw_qqbar_all_file.columns = ["mass", "AFB"]
-    x = afb_raw_qqbar_all_file["mass"].values
-    y = afb_raw_qqbar_all_file["AFB"].values
-    # Create spline (exact interpolation)
-    afb_raw_qqbar_all_spline = create_spline(x,y,"qqbar true")
-
     # weights for rapidity regions extracted from dataframe thusly
     '''
     pt_ok = ((df["pt1"] > 25) & (df["pt2"] > 15)) | ((df["pt1"] > 15) & (df["pt2"] > 25))
@@ -329,26 +322,16 @@ def compute_afb_correction():
         afb_raw_wgt += np.array(afbs(fine_mass))*wgt
         tot_wgt+=wgt
 
-    afb_raw_wgt_spline =  create_spline(fine_mass,afb_raw_wgt,descr="correction",plot=True)
-    #plt.figure(figsize=(5,5))
-    #plt.plot(fine_mass, afb_raw_wgt, label="Spline", color="blue")
-    #plt.xlabel(r"$m_{\ell\ell}$ [GeV]")
-    #plt.ylabel(r"$A_{FB}$")
-    #plt.legend()
-    #plt.show()
-
+    afb_raw_wgt_spline =  create_spline(fine_mass,afb_raw_wgt,descr="correction",plot=False)
 
     # correction... note only works for integrated rapidity
     ad_hoc_corr = 0.6*np.array([0.9,0.8,0.5,-0.000,-2.7,2.0,0.4,0.5,0.7,1.,1.3,1.])
     bc = 0.5*np.array(bins[1:]+bins[:-1]) 
     ad_hoc_corr_spline_vals = np.interp(fine_mass, bc, ad_hoc_corr)
    
-    
-    # now compute the true AFB in the same mass values
-    # and take correction
+    # now compute the true AFB in the same mass values multiply by correction
     afb_true_vals = np.array(afb_true_spline(fine_mass))
-    afb_raw_qqbar_all_vals = np.array(afb_raw_qqbar_all_spline(fine_mass)) 
     afb_corr = afb_raw_wgt/afb_true_vals*ad_hoc_corr_spline_vals 
+    afb_corr_spline = create_spline(fine_mass,afb_corr,descr="correction",plot=False)
 
-    afb_corr_spline = create_spline(fine_mass,afb_corr,descr="correction",plot=True)
-    return afb_corr_spline, afb_raw_wgt_spline 
+    return afb_corr_spline
